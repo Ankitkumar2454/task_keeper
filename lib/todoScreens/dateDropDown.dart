@@ -21,7 +21,7 @@ class _DateDropDownState extends State<DateDropDown> {
   late double height, width, xPosition, yPosition;
   // bool isDropDateOpened = AuthClient().dropDateCheck;
   bool isDropDateOpened = false;
-  late OverlayEntry floatingDropdown;
+  late OverlayEntry floatingdateDropdown;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _DateDropDownState extends State<DateDropDown> {
       // isDropDateOpened = false;
     });
 
-    floatingDropdown = _createFloatingDropdown();
+    floatingdateDropdown = _createFloatingDateDropdown();
   }
 
   void findDropdownData() {
@@ -54,7 +54,7 @@ class _DateDropDownState extends State<DateDropDown> {
     }
   }
 
-  OverlayEntry _createFloatingDropdown() {
+  OverlayEntry _createFloatingDateDropdown() {
     return OverlayEntry(builder: (context) {
       return Positioned(
         left: 28,
@@ -64,7 +64,7 @@ class _DateDropDownState extends State<DateDropDown> {
         child: DropDownDate(
           itemHeight: height,
           isDropdownOpened: isDropDateOpened,
-          floatingDropdown: floatingDropdown,
+          floatingdateDropdown: floatingdateDropdown,
         ),
       );
     });
@@ -80,11 +80,11 @@ class _DateDropDownState extends State<DateDropDown> {
       onTap: () {
         setState(() {
           if (isDropDateOpened) {
-            floatingDropdown.remove();
+            floatingdateDropdown.remove();
           } else {
             findDropdownData();
-            floatingDropdown = _createFloatingDropdown();
-            Overlay.of(context).insert(floatingDropdown);
+            floatingdateDropdown = _createFloatingDateDropdown();
+            Overlay.of(context).insert(floatingdateDropdown);
           }
           isDropDateOpened = !isDropDateOpened;
 
@@ -122,12 +122,12 @@ class _DateDropDownState extends State<DateDropDown> {
 
 class DropDownDate extends StatefulWidget {
   final double itemHeight;
-  OverlayEntry floatingDropdown;
+  OverlayEntry floatingdateDropdown;
   bool isDropdownOpened;
   DropDownDate({
     Key? key,
     required this.itemHeight,
-    required this.floatingDropdown,
+    required this.floatingdateDropdown,
     required this.isDropdownOpened,
   }) : super(key: key);
 

@@ -19,45 +19,44 @@ class ReminderDropDown extends StatefulWidget {
 }
 
 class _ReminderDropDownState extends State<ReminderDropDown> {
-  late GlobalKey actionKey;
-  late OverlayEntry floatingDropdown;
-  bool isDropdownOpened = false;
-  late double height, width, xPosition, yPosition;
+  late GlobalKey actionReminderKey;
+  late OverlayEntry floatingReminderDropdown;
+  bool isDropdownReminderOpened = false;
+  late double rheight, rwidth, rxPosition, ryPosition;
   @override
   void initState() {
     setState(() {
-      actionKey = LabeledGlobalKey(widget.text);
-
-      isDropdownOpened = false;
+      actionReminderKey = LabeledGlobalKey(widget.text);
+      isDropdownReminderOpened = false;
     });
 
-    floatingDropdown = _createFloatingDropdown();
+    floatingReminderDropdown = _createFloatingReminderDropdown();
     super.initState();
   }
 
-  void findDropdownData() {
+  void findDropdownReminderData() {
     RenderBox? renderBox =
-        actionKey.currentContext?.findRenderObject() as RenderBox?;
+        actionReminderKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
-      height = renderBox.size.height;
-      width = renderBox.size.width;
+      rheight = renderBox.size.height;
+      rwidth = renderBox.size.width;
       Offset offset = renderBox.localToGlobal(Offset.zero);
-      xPosition = offset.dx;
-      yPosition = offset.dy;
+      rxPosition = offset.dx;
+      ryPosition = offset.dy;
     } else {}
   }
 
-  OverlayEntry _createFloatingDropdown() {
+  OverlayEntry _createFloatingReminderDropdown() {
     return OverlayEntry(builder: (context) {
       return Positioned(
-        left: xPosition,
-        width: width * 2.8,
+        left: rxPosition,
+        width: rwidth * 2.8,
         top: 420,
-        height: 10.5 * height,
+        height: 10.5 * rheight,
         child: DropDownReminder(
-          itemHeight: height,
-          isDropdownOpened: isDropdownOpened,
-          floatingDropdown: floatingDropdown,
+          itemHeight: rheight,
+          isDropdownReminderOpened: isDropdownReminderOpened,
+          floatingReminderDropdown: floatingReminderDropdown,
         ),
       );
     });
@@ -67,23 +66,18 @@ class _ReminderDropDownState extends State<ReminderDropDown> {
   Widget build(BuildContext context) {
     AuthClient authClient = Provider.of<AuthClient>(context, listen: false);
     return GestureDetector(
-      key: actionKey,
+      key: actionReminderKey,
       onTap: () {
         setState(() {
-          if (isDropdownOpened) {
-            print("before false");
-            print(ReminderDropDown.reminderCheck);
-            floatingDropdown.remove();
-            ReminderDropDown.reminderCheck = false;
+          if (isDropdownReminderOpened) {
+            floatingReminderDropdown.remove();
           } else {
-            findDropdownData();
-            floatingDropdown = _createFloatingDropdown();
-            Overlay.of(context).insert(floatingDropdown);
-            ReminderDropDown.reminderCheck = true;
+            findDropdownReminderData();
+            floatingReminderDropdown = _createFloatingReminderDropdown();
+            Overlay.of(context).insert(floatingReminderDropdown);
           }
-          isDropdownOpened = !isDropdownOpened;
-          authClient.dropDownReminderCheck(isDropdownOpened);
-          // authClient.BoxOneAtATime(4);
+          isDropdownReminderOpened = !isDropdownReminderOpened;
+          authClient.dropDownReminderCheck(isDropdownReminderOpened);
         });
       },
       child: Container(
@@ -114,13 +108,13 @@ class _ReminderDropDownState extends State<ReminderDropDown> {
 
 class DropDownReminder extends StatefulWidget {
   double itemHeight;
-  OverlayEntry floatingDropdown;
-  bool isDropdownOpened;
+  OverlayEntry floatingReminderDropdown;
+  bool isDropdownReminderOpened;
   DropDownReminder({
     Key? key,
     required this.itemHeight,
-    required this.floatingDropdown,
-    required this.isDropdownOpened,
+    required this.floatingReminderDropdown,
+    required this.isDropdownReminderOpened,
   }) : super(key: key);
 
   @override
@@ -384,7 +378,7 @@ class _DropDownReminderState extends State<DropDownReminder> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: ClipPath(
-                clipper: ArrowClipper(),
+                clipper: ArrowReminderClipper(),
                 child: Container(
                   height: 13,
                   width: 13,
@@ -404,7 +398,7 @@ class _DropDownReminderState extends State<DropDownReminder> {
   }
 }
 
-class ArrowClipper extends CustomClipper<Path> {
+class ArrowReminderClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
